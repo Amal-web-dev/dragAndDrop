@@ -411,6 +411,7 @@ header img {
   align-items: center;
   padding: 5px;
   gap: 5px;
+  margin-right: 20px;
 }
 
 .link:hover  {
@@ -470,4 +471,295 @@ header img {
   position: absolute;
   top: 10px;
   right: 10px;
+}
+
+.todo-block {
+  background-color: #F1F2F4;
+  border-radius: 10px;
+  border: none;
+  width: 271px;
+  height: auto;
+  padding: 10px;
+  position: relative;
+  margin-top: 5px;
+}
+
+.title-input {
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  color: #172B4D;
+  font-weight: 500;
+  border-radius: 5px;
+  padding: 5px;
+  background-color: #F1F2F4;
+}
+
+.title-input-2 {
+  border: 2px solid #4688E8;
+  cursor: auto;
+  font-size: 12px;
+  color: #172B4D;
+  font-weight: 500;
+  border-radius: 5px;
+  padding: 5px;
+  background-color: white;
+}
+
+main {
+  margin-left: 30px;
+  margin-top: 10px;
+}
+
+.dots-block {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  padding: 5px;
+  width: 30px;
+  height: 30px;
+}
+
+.dots-block:hover {
+  background-color: #DFE1E6;
+}
+
+.todo-card {
+  width: 250px;
+  background-color: white;
+  height: auto;
+  border-radius: 5px;   
+  padding: 8px 5px;
+  box-shadow: 0 0 1px 1px #ABB3BF;
+  cursor: pointer;
+  position: relative;
+  margin-bottom: 5px;
+}
+
+.pencil-block {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 60%;
+  padding: 5px;
+  width: 25px;
+  height: 25px;
+  border-radius: 5px;
+}
+
+.pencil-block:active {
+  scale: .9;
+}
+
+.todo-card:hover .pencil-block{
+  background-image: url(./public/icon/pencil.svg);
+}
+
+.pencil-block:hover{
+  background-color: #DFE1E6;
+}
+
+.todo-card:hover {
+  background-color: #F1F2F4;
+}
+
+.todo-card p {
+  font-size: 12px;
+}
+
+.todo-card input {
+  border: none;
+  background-color: white;
+  cursor: pointer;
+}
+
+.todo-card:hover input {
+  background-color: #F1F2F4;
+}
+
+.all-todo-card {
+  margin-top: 10px;
+}
+
+.all-main-block {
+  display: flex;
+  gap: 10px;
+}
+
+.add-card {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+  border-radius: 5px;
+  margin-top: 10px;
+  padding: 2px 4px;
+  padding-right: 80px;
+  color: #768296;
+  font-size: 14px;
+}
+
+.add-card p  {
+  font-size: 25px;
+}
+
+.add-card:hover {
+  background-color: #DFE1E6;
+}
+
+.add-todo-block {
+  width: 271px;
+  padding: 10px;
+  height: 60px;
+  background-color: #BC6F94;
+  color: white;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  margin-top: 5px;
+}
+
+.add-todo-block:active {
+  scale: .9;
+}
+
+.add-todo-block:hover  {
+  background-color: #D575A3;
+}
+
+.add-todo-block p {
+  font-size: 24px;
+  margin-right: 20px;
+}
+
+.all-todo-block {
+  display: flex;
+  gap: 10px;
+}
+
+.create-task-block {
+  width: 700px;
+  height: 600px;
+  background-color: #883C60;
+  border-radius: 10px;
+  position: absolute;
+  top: -15%;
+  right: 50%;
+  translate: 50% 50%;
+  padding: 30px;
+  color: white;
+  scale: 0;
+  z-index: 20;
+}
+
+.close {
+  filter: invert(100%);
+}
+
+.close:hover {
+  filter: invert(80%);
+}
+
+.create-task-block p {
+  margin-bottom: 10px;
+}
+
+.create-task-block select,
+.create-task-block input {
+  background-color: #9B5B79;
+  border: none;
+  width: 600px;
+  height: 40px;
+  border-radius: 10px;
+  padding: 10px;
+  color: white;
+  margin-bottom: 15px;
+}
+
+
+.create-task-block option {
+  font-size: 16px;
+}
+
+.btn-block {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 20px;
+}
+
+.btn-block button {
+  background-color: #9B5B79;
+  color: white;
+  border: 1px solid #BC6F94;
+  border-radius: 5px;
+  padding: 10px;
+  font-style: 16px;
+}
+
+.user-block {
+  display: flex;
+  background-color: #9B5B79;
+  align-items: center;
+  gap: 10px;
+  width: 170px;
+  border-radius: 5px;
+  padding: 5px;
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.users-block {
+  display: flex;
+  gap: 5px;
+}
+
+.user-block p {
+  margin-top: 12px;
+}
+
+.user-close {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 15px;
+  cursor: pointer;
+  filter: invert(100%);
+}
+
+.hold {
+  transform: rotateY(45deg);
+  cursor: pointer;
+  border: solid red 4px;
+}
+
+
+.invisible {
+  display: none;
+  rotate: 45deg;
+  cursor: pointer;
+  border: solid red 4px;
+}
+
+
+
+.fill {
+  position: relative;
+  height: 100%;
+  width: 90%;
+  top: 5px;
+  left: 5px;
+  cursor: pointer;
+  background: white;
+  rotate: 45deg;
 }
