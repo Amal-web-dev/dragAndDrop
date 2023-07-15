@@ -1,0 +1,70 @@
+{
+  "members": [
+    {
+      "id": 1,
+      "fullName": "Alex Adams",
+      "avatar": "icon1.png",
+      "department": "software dev"
+    },
+    {
+      "id": 2,
+      "fullName": "Jordan Belfort",
+      "avatar": "icon2.png",
+      "department": "designer"
+    },
+    {
+      "id": 3,
+      "fullName": "Obama bam",
+      "avatar": "icon3.png",
+      "department": "President"
+    },
+    {
+      "id": 4,
+      "fullName": "Shavkat Mirz",
+      "avatar": "icon4.png",
+      "department": "President"
+    },
+    {
+      "id": 5,
+      "fullName": "Jhon Skala",
+      "avatar": "icon5.png",
+      "department": "Kachok"
+    },
+    {
+      "id": 6,
+      "fullName": "Brat Jhona",
+      "avatar": "icon6.png",
+      "department": "Akter"
+    }
+  ],
+  "blocks": [
+    {
+      "id": 1,
+      "title": "Нужно сделать",
+      "tasks": []
+    },
+    {
+      "id": 2,
+      "title": "В процессе",
+      "tasks": []
+    },
+    {
+      "id": 3,
+      "title": "Выполнено",
+      "tasks": []
+    }
+  ],
+  "todos": [
+    {
+      "member": [
+        "Alex Adams",
+        "Obama bam"
+      ],
+      "id": 0.26219144164299624,
+      "task": "homeTask",
+      "discription": "do  JS homeWork",
+      "status": "Нужно сделать",
+      "date": "2023-07-15"
+    }
+  ]
+}
