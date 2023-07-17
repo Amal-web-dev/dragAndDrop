@@ -1,19 +1,19 @@
 import { post } from "jquery";
 import { useHttp } from "./modules/http.request";
 import axios  from 'axios'
-
+import { allTodoCards, createTask, createTodoBlock, createUserIcon, reloadUser } from "./modules/ui.js";
 let arrowBlock = document.querySelector('.arrow-block')
+
 let arrowIcon = document.querySelector('.img-arrow')
 let leftBlind = document.querySelector('.left-blind')
 let elements = document.querySelectorAll('*');
 let inpSearch = document.querySelector('.inp-search')
 let searchImg = document.querySelector('.search-img')
-let titleInput = document.querySelector('.title-input')
+let titleInput = document.querySelectorAll('.title-input')
 let todoInput = document.querySelectorAll('.todo-input');
 let pencilButton = document.querySelectorAll('.pencil-block');
 let addCard = document.querySelectorAll('.add-card')
 let addTodoBlock = document.querySelector('.add-todo-block')
-let allTodoBlock = document.querySelector('.all-todo-block')
 let starIcon = document.querySelector('.star-icon')
 let avaBlock = document.querySelector('.choose-ava')
 let backModal = document.querySelector('.back-modal')
@@ -30,6 +30,8 @@ let select = document.querySelector('.select-user');
 let imgBlock = document.querySelector('.img-block');
 let usersBlock = document.querySelector('.users-block')
 let todoCard = document.querySelectorAll('.todo-card')
+let allTodoCard = document.querySelectorAll('.all-todo-card');
+
 
 let selectedUsers = []
 let userArray = []
@@ -39,11 +41,10 @@ let temp_id
 
 const {request} = useHttp()
 
-if (localStorage.getItem('titleValue')) {
-	let savedValue = localStorage.getItem('titleValue');
 
-	titleInput.value = savedValue;
-}
+
+
+
 
 // ui effects
 arrowBlock.onclick = () => {
@@ -59,17 +60,7 @@ arrowBlock.onclick = () => {
 
 }
 
-document.onclick = (event) => {
-	if (!inpSearch.contains(event.target)) {
-		inpSearch.className = 'inp-search'
-		searchImg.classList.remove('black-img')
-		inpSearch.placeholder = 'Serach'
-	}
 
-	if (!titleInput.contains(event.target)) {
-		titleInput.className = 'title-input'
-	}
-};
 
 inpSearch.onclick = function () {
 	inpSearch.className = 'inp-search-2-version'
@@ -115,9 +106,8 @@ userFace.forEach(img => {
 	img.onclick = () => {
 		userIcon.forEach(icon => {
 			localStorage.setItem('selectedImage', img.src)
-
-			let src = localStorage.getItem('selectedImage')
 			icon.src = src
+
 		})
 		avaBlock.style.scale = 0;
 
@@ -129,67 +119,16 @@ userFace.forEach(img => {
 })
 
 
-
-// block
-
-// titleInput.onclick = function () {
-// 	titleInput.className = 'title-input-2'
-// 	titleInput.selectionStart = titleInput.value.length;
-// };
-
-// titleInput.onkeyup = () => {
-// 	let inputValue = titleInput.value;
-
-// 	localStorage.setItem('titleValue', inputValue);
-// };
-
-
-
+let src = localStorage.getItem('selectedImage')
+userIcon.forEach(icon => {
+	icon.src = src
+})
 
 
 request('/blocks', 'get')
 .then(res => createTodoBlock(res))
 
-function createTodoBlock(arr) {
 
-  for (const item of arr) {
-  let todoBlock = document.createElement('div')
-	let dotsBlock = document.createElement('div')
-	let dotsIcon = document.createElement('img')
-	let input = document.createElement('input')
-	let allTodoCard = document.createElement('div')
-	let todoCard = document.createElement('div')
-	let addCard = document.createElement('div')
-	let p = document.createElement('p')
-
-	todoCard.classList.add('todo-card')
-	input.classList.add('title-input')
-	todoBlock.classList.add('todo-block')
-	dotsBlock.classList.add('dots-block')
-	dotsIcon.classList.add('dots-in-todo')
-	input.classList.add('title-input"')
-	allTodoCard.classList.add('all-todo-card')
-	addCard.classList.add('add-card')
-
-	input.type = 'text'
-	p.innerHTML = '+'
-	addCard.innerHTML = 'Добавить карточку'
-	dotsIcon.src = './public/icon/dots.svg'
-	input.value = item.title
-
-  
-  allTodoBlock.append(todoBlock)
-	todoBlock.append(dotsBlock, input, allTodoCard, addCard)
-	dotsBlock.append(dotsIcon)
-	addCard.prepend(p)
-
-  
-
-
-	input.focus();
-	input.selectionEnd = input.value.length;
-  }
-}
 
 createTodo.onclick = () => {
 	createTaskBlock.style.display = 'block';
@@ -214,19 +153,7 @@ function closeModal() {
 
 let formTodo = document.forms.formTodo
 
-async function getUserIdByName(name) {
-  try {
-    const res = await request('/member/' + name);
-    console.log(res);
-  } catch (error) {
-    console.error(error);
-  }
-}
-let allTodoCard = document.querySelectorAll('.all-todo-card');
 
-// addTodoBlock.onclick = () => {
-
-// }
 
 formTodo.onsubmit = (e) => {
   e.preventDefault();
@@ -286,17 +213,7 @@ request('/members?fullName=' + fullNameParam, 'get')
 
 console.log(todo.member);
 };
-function fetchTasks() {
-  request('/todos', 'get')
-    .then(res => {
-      createTask(res);
-    })
-    .catch(error => {
-      console.error(error);
-    });
-}
 
-fetchTasks();
 
 
 select.onchange = () => {
@@ -304,22 +221,12 @@ select.onchange = () => {
 }
 
 
-function reloadUser(arr) {
-	for (const item of arr) {
-		let option = document.createElement('option');
-		option.innerHTML = item.fullName;
-    option.value = item.fullName
-		select.append(option);
-	}
-}
+request('/todos', 'get')
+.then(res => {
+	createTask(res)
+})
 
-request("/members/", "get")
-	.then(res => {
-		reloadUser(res)
-		userArray = res
-	})
-
-function createUser(arr) {
+export function createUser(arr) {
 	let selectedOption = select.options[select.selectedIndex];
 	let selectedName = selectedOption.text;
 
@@ -350,95 +257,66 @@ function createUser(arr) {
 	selectedUsers.push(selectedUser);
 }
 
-todoCard.forEach(todo => {
-	todo.setAttribute('draggable', true)
-	todo.ondragstart = () => {
-		todo.classList.add('hold')
-		setTimeout(() => (todo.className = 'invisible'), 0)
-	}
-
-	todo.ondragend = () => {
-		todo.className = 'todo-card'
-	}
-})
-
-function createTask(arr) {
-
-  for (const item of arr) {
-    console.log(item);
-    let todoCard = document.createElement('div');
-    let input = document.createElement('input');
-    let pencil = document.createElement('div');
-    let timeBlock = document.createElement('div');
-    let timeIcon = document.createElement('img');
-    let timeSpan = document.createElement('p');
-    let descriptionP = document.createElement('p');
-
-    todoCard.classList.add('todo-card');
-    input.classList.add('todo-input');
-    timeBlock.classList.add('time-block')
-    descriptionP.classList.add('description')
-
-    input.type = 'text';
-    input.value = item.task;
-    pencil.classList.add('pencil-block');
-    timeSpan.innerHTML = item.date
-    timeIcon.src = './public/icon/time-icon.svg'
-    descriptionP.innerHTML = item.discription
-
-allTodoCard.forEach(card => {
-  // request('/blocks', 'get')
-  // .then(res => {
-  //  for (const item of res) {
-  //   if(item.title == input.value)  {
-  //     card.prepend(todoCard);
-  //   }
-  //  }
-  // })
-  card.append(todoCard)
-});
-    todoCard.append(input, descriptionP, pencil, timeBlock);
-    timeBlock.append(timeIcon, timeSpan)
-  
-  
-    input.onkeydown = (event) => {
-      if (event.key === 'Enter' || event.target !== input) {
-        if (input.value.trim() === '') {
-          alert('Введите текст задачи');
-    };
-  
-    input.focus();
-    input.selectionEnd = input.value.length;
-
-  }
-  }
- 
-}
-}
 
 
-let usersIconBlock = document.querySelector('.users-icon-block')
 
 request('/members', 'get') 
 .then(res => createUserIcon(res))
 
-function createUserIcon(arr) {
-  for (const item of arr) {
-    let userIcon = document.createElement('div')
-    let img  =  document.createElement('img')
 
-    userIcon.classList.add('user-block-icon')
-    if(item.id <= 3) {
-      img.src = '/public/avatars/' + item.avatar
-    } else {
-      userIcon.innerHTML = '+' + (arr.length - 3)
-      usersIconBlock.append(userIcon)
-      userIcon.append(img)
-      userIcon.style.zIndex = '9'
-      return
-    }
+request("/members/", "get")
+	.then(res => {
+		reloadUser(res)
+		userArray = res
+	})
 
-    usersIconBlock.append(userIcon)
-    userIcon.append(img)
-  }
-}
+	if (localStorage.getItem('titleValue')) {
+		let savedValue = localStorage.getItem('titleValue');
+	
+		titleInput.forEach(inp => {
+			inp.value = savedValue;
+	})
+	}
+
+	titleInput.forEach(inp => {
+		inp.onclick = () => {
+			inp.className = 'title-input-2'
+			inp.selectionStart = titleInput.value.length;
+		};
+		})
+	
+
+	document.onclick = (event) => {
+		if (!inpSearch.contains(event.target)) {
+			inpSearch.className = 'inp-search'
+			searchImg.classList.remove('black-img')
+			inpSearch.placeholder = 'Serach'
+		}
+	
+	};
+
+// DragAndDrop
+console.log(allTodoCards);
+	for(let allCard of allTodoCards) {
+		console.log(temp);
+		console.log(allCard);
+	
+		allCard.ondragover = (event) => {
+			event.preventDefault()
+		}
+		allCard.ondragenter = function(event) {
+			event.preventDefault()
+			this.className += ' hovered'
+		}
+		allCard.ondragleave = function() {
+			this.className = 'all-todo-card'
+		}
+		allCard.ondrop = function() {
+			this.className = 'all-todo-card'
+			temp.forEach((item, index) => {
+				if(item.id === temp_id) {
+					this.append(item)
+				}
+			})
+		}
+	}

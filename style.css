@@ -668,6 +668,7 @@ main {
 .all-todo-block {
   display: flex;
   gap: 10px;
+  align-items: baseline;
 }
 
 .create-task-block {
@@ -771,30 +772,20 @@ main {
 }
 
 .hold {
-  transform: rotateY(45deg);
-  cursor: pointer;
-  border: solid red 4px;
+  border: solid red 4px !important;
 }
 
 
 .invisible {
   display: none;
-  rotate: 45deg;
   cursor: pointer;
   border: solid red 4px;
+  rotate: 45deg;
 }
 
-
-
-.fill {
-  position: relative;
-  height: 100%;
-  width: 90%;
-  top: 5px;
-  left: 5px;
-  cursor: pointer;
-  background: white;
-  rotate: 45deg;
+.hovered {
+  background: gray;
+  border-style: dashed;
 }
 
 ::-webkit-scrollbar {
@@ -840,4 +831,9 @@ main {
 
 .users-icon-block {
   display: flex;
+}
+
+.user-div {
+  display: flex;
+  gap: 3px;
 }
