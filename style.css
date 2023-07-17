@@ -230,17 +230,6 @@ header img {
   border: none;
 }
 
-.inc-block {
-  background-color: #58C0F780;
-  padding: 5px 8px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: .4s;
-}
-
-.inc-block:hover {
-  background-color: #58C0F7;
-}
 
 .btn-invite {
   border: none;
@@ -677,7 +666,7 @@ main {
   background-color: #883C60;
   border-radius: 10px;
   position: absolute;
-  top: -15%;
+  top: -30%;
   right: 50%;
   translate: 50% 50%;
   padding: 30px;
@@ -836,4 +825,76 @@ main {
 .user-div {
   display: flex;
   gap: 3px;
+}
+
+.add-user {
+  padding: 8px 8px;
+  border: none;
+  background-color: #BC6F94;
+  color: white;
+  border-radius: 5px;
+}
+
+.add-user:hover {
+  background-color: #C887A6;
+}
+
+.add-user-modal {
+  width: 700px;
+  height: 460px;
+  background-color: #883C60;
+  border-radius: 10px;
+  position: absolute;
+  top: -30%;
+  right: 50%;
+  translate: 50% 50%;
+  padding: 30px;
+  color: white;
+  z-index: 20;
+  scale: 0;
+}
+
+.close-user-add-icon {
+  filter: invert(100%);
+}
+
+.add-user-modal select,
+.add-user-modal input {
+  background-color: #9B5B79;
+  border: none;
+  width: 600px;
+  height: 40px;
+  border-radius: 10px;
+  padding: 10px;
+  color: white;
+  margin-bottom: 15px;
+}
+
+.add-user-modal p {
+  margin-bottom: 10px;
+}
+
+.add-user-modal option {
+  font-size: 16px;
+}
+
+.choose-avatar {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.choose-avatar img {
+  cursor: pointer;
+  border-radius: 100%;
+}
+
+.choose-avatar img:active {
+  scale: .9;
+}
+
+.selected-ava  {
+  border: 2px solid white;
+  scale: 1.1;
 }

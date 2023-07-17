@@ -90,6 +90,7 @@
       <div class="users-icon-block">
       <!-- <div class="user-block-icon"><img src="./public/avatars/icon1.png"></div> -->
     </div>
+    <button class="add-user">Добавить пользователя</button>
     </div>
     <div class="under-left">
       <div class="upgrade-block">
@@ -234,38 +235,53 @@
       </div>
   </div>
 
+  <div class="add-user-modal">
+    <img src="./public/icon/cancel.svg" class="close-icon close-user-add-icon">
+     <form name="formUser">
+    <label>
+      <p>Напишите полное имя полльзователя</p>
+      <input type="text" name="fullName" required>
+    </label>
+    <label>
+      <p>Выберите профессию</p>
+      <select class="select-user" name="department">
+        <option value="kachok">Kachok</option>
+        <option value="Botan">Botan</option>
+        <option value="pojarnik">Pojarnik</option>
+        <option value="Xokage">Xokage</option>
+        <option value="Pirat">Pirat</option>
+      </select>
+    </label>
+    <div class="users-block"></div>
+    <label>
+      <p>Выберите аватарку</p>
+      <div class="choose-avatar">
+      <img src="./public/avatars/icon1.png" width="40px" class="user-avatar" data-avatar="icon1.png">
+      <img src="./public/avatars/icon2.png" width="40px" class="user-avatar" data-avatar="icon2.png">
+      <img src="./public/avatars/icon3.png" width="40px" class="user-avatar" data-avatar="icon3.png">
+      <img src="./public/avatars/icon4.png" width="40px" class="user-avatar" data-avatar="icon4.png">
+      <img src="./public/avatars/icon5.png" width="40px" class="user-avatar" data-avatar="icon5.png">
+      <img src="./public/avatars/icon6.png" width="40px" class="user-avatar" data-avatar="icon6.png">
+      <img src="./public/avatars/icon7.png" width="40px" class="user-avatar" data-avatar="icon7.png">
+      <img src="./public/avatars/icon8.png" width="40px" class="user-avatar" data-avatar="icon8.png">
+      <img src="./public/avatars/icon9.png" width="40px" class="user-avatar" data-avatar="icon9.png">
+      <img src="./public/avatars/icon10.png" width="40px" class="user-avatar" data-avatar="icon10.png">
+    </div>
+    </label>
 
-  <div class="create-card-modal">
-
+    <br>
+    <div class="btn-block">
+      <button>Создать полльзователя</button>
+    </div>
+  </form>
+  <div class="btn-block">
+    <button class="close-btn close-user-add">Закрыть</button>
+    </div>
   </div>
 
+  <div class="create-card-modal"></div>
+
   <script type="module" src="/main.js"></script>
-<!-- <script src="https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/moment.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.min.js"></script>
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.css" />
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<script type="text/javascript">
-  document.addEventListener("DOMContentLoaded", function() {
-    let input = $('.inp-date');
-
-    $(input).daterangepicker({
-      autoUpdateInput: false,
-      locale: {
-        cancelLabel: 'Clear'
-      }
-    });
-
-    $(input).on('apply.daterangepicker', function(ev, picker) {
-      $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
-    });
-
-    $(input).on('cancel.daterangepicker', function(ev, picker) {
-      $(this).val('');
-    });
-  });
-</script> -->
 </body>
-
 </html>

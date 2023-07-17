@@ -31,20 +31,21 @@ let imgBlock = document.querySelector('.img-block');
 let usersBlock = document.querySelector('.users-block')
 let todoCard = document.querySelectorAll('.todo-card')
 let allTodoCard = document.querySelectorAll('.all-todo-card');
-
+let userAvatar  = document.querySelectorAll('.user-avatar')
+let closeUserIcon = document.querySelector('.close-user-add-icon')
+let addUserModal = document.querySelector('.add-user-modal')
+let addUser = document.querySelector('.add-user')
+let closeUserAdd=  document.querySelector('.close-user-add')
+let formUser = document.forms.formUser
 
 let selectedUsers = []
 let userArray = []
 let isStarred = false;
 let arrowToggle = false
 let temp_id
+let selectedAvatar = null;
 
 const {request} = useHttp()
-
-
-
-
-
 
 // ui effects
 arrowBlock.onclick = () => {
@@ -79,26 +80,57 @@ starIcon.onclick = function () {
 // ui effects
 
 // user
-userBlock.onclick = () => {
-	avaBlock.style.display = 'block';
-	backModal.style.display = 'block';
-
-	setTimeout(function () {
-		avaBlock.style.scale = 1;
-	}, 0);
-};
 // user
 
 // modal 
 
-closeIcon.onclick = () => {
-	avaBlock.style.scale = 0;
+function closeModal(block) {
+	block.style.scale = 0;
 
 	setTimeout(function () {
-		avaBlock.style.display = 'none';
+		block.style.display = 'none';
 		backModal.style.display = 'none'
 	}, 300);
+}
+
+function openModal(block) {
+	block.style.display = 'block';
+	backModal.style.display = 'block';
+
+	setTimeout(function () {
+		block.style.scale = 1;
+	}, 0);
+}
+closeIcon.onclick = () => {
+	closeModal(avaBlock)
 };
+
+userBlock.onclick = () => {
+	openModal(avaBlock)
+};
+
+createTodo.onclick = () => {
+	openModal(createTaskBlock)
+};
+
+closeBtn.onclick = () => {
+	closeModal(createTaskBlock)
+}
+closeTodo.onclick = () => {
+	closeModal(createTaskBlock)
+} 
+
+closeUserIcon.onclick = () => {
+	closeModal(addUserModal)
+}
+
+addUser.onclick = () => {
+	openModal(addUserModal)
+}
+
+closeUserAdd.onclick = () => {
+  closeModal(addUserModal)
+}
 // modal 
 
 
@@ -107,17 +139,20 @@ userFace.forEach(img => {
 		userIcon.forEach(icon => {
 			localStorage.setItem('selectedImage', img.src)
 			icon.src = src
-
 		})
-		avaBlock.style.scale = 0;
-
-		setTimeout(function () {
-			avaBlock.style.display = 'none';
-			backModal.style.display = 'none'
-		}, 300);
+		closeModal(avaBlock)
 	}
 })
 
+userAvatar.forEach(ava => {
+	ava.onclick = () => {
+	  if (selectedAvatar) {
+		selectedAvatar.classList.remove('selected-ava')
+	  }
+	  ava.classList.add('selected-ava')
+	  selectedAvatar = ava; 
+	}
+  });
 
 let src = localStorage.getItem('selectedImage')
 userIcon.forEach(icon => {
@@ -128,28 +163,6 @@ userIcon.forEach(icon => {
 request('/blocks', 'get')
 .then(res => createTodoBlock(res))
 
-
-
-createTodo.onclick = () => {
-	createTaskBlock.style.display = 'block';
-	backModal.style.display = 'block';
-
-	setTimeout(function () {
-		createTaskBlock.style.scale = 1;
-	}, 0);
-};
-
-closeBtn.onclick = closeModal
-closeTodo.onclick = closeModal
-
-function closeModal() {
-	createTaskBlock.style.scale = 0;
-
-	setTimeout(function () {
-		createTaskBlock.style.display = 'none';
-		backModal.style.display = 'none'
-	}, 300);
-}
 
 let formTodo = document.forms.formTodo
 
@@ -214,7 +227,32 @@ request('/members?fullName=' + fullNameParam, 'get')
 console.log(todo.member);
 };
 
+formUser.onsubmit = (e) => {
+	e.preventDefault();
 
+	let member = {}
+
+	let fm = new FormData(formUser)
+
+	fm.forEach((value, key) => {
+		member[key] = value
+	  });
+
+     userAvatar.forEach(ava => {
+		if (ava.classList.contains('selected-ava')) {
+			member.icon = ava.getAttribute('data-avatar')
+		}
+	 })
+	 userAvatar.forEach(ava => {
+		ava.classList.remove('selected-ava')
+	 })
+	  formUser.reset()
+	  request("/members", "post", member)
+	  .then(res => console.log(res))
+
+	  
+  closeModal(addUserModal)
+}
 
 select.onchange = () => {
 	createUser(selectedUsers);
@@ -256,9 +294,6 @@ export function createUser(arr) {
 	select.removeChild(selectedOption);
 	selectedUsers.push(selectedUser);
 }
-
-
-
 
 request('/members', 'get') 
 .then(res => createUserIcon(res))
@@ -320,3 +355,6 @@ console.log(allTodoCards);
 			})
 		}
 	}
+
+// DragAndDrop
+

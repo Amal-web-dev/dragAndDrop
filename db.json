@@ -35,6 +35,18 @@
       "fullName": "Brat Jhona",
       "avatar": "icon6.png",
       "department": "Akter"
+    },
+    {
+      "fullName": "awd",
+      "department": "pojarnik",
+      "icon": "icon3.png",
+      "id": 7
+    },
+    {
+      "fullName": "awd",
+      "department": "Botan",
+      "icon": "icon7.png",
+      "id": 8
     }
   ],
   "blocks": [
