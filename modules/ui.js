@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useHttp } from "./http.request";
 const {request} = useHttp()
+import { openModal, closeModal } from "./func";
 export let allTodoCards = []
 let allTodoBlock = document.querySelector('.all-todo-block')
 let usersIconBlock = document.querySelector('.users-icon-block')
@@ -9,10 +10,16 @@ let selectedUsers = []
 let userArray = []
 let temp_id 
 let temp = []
+let titleNew = []
+export let statusToCardMap = {}
+let statusCounter = 1
+let remakeTitle = document.querySelector('.remake-title')
+let remakeTitleInp = document.querySelector('.remake-title-inp')
+let createTaskBlock = document.querySelector('.create-task-block')
+let filterDosk = document.querySelector('.filter-dosk')
 
-
-
-export async function createTask(arr) {
+async function createTask(arr, place) {
+  place.innerHTML = ''
 
     for (const item of arr) {
       let todoCard = document.createElement('div');
@@ -55,20 +62,15 @@ export async function createTask(arr) {
 
       
     todoCard.setAttribute('id', item.id)
-    // todoCard.setAttribute('class', 'fill')
     todoCard.setAttribute('draggable', true)
   
       todoCard.append(input, descriptionP, pencil, timeBlock, userDiv);
       timeBlock.append(timeIcon, timeSpan)
     
-      if (item.status == 'Нужно сделать') {
-        allTodoCards[0].append(todoCard)
-      } else if (item.status == 'В процессе') {
-        allTodoCards[1].append(todoCard)
-      } else if (item.status == 'Выполнено') {
-        allTodoCards[2].append(todoCard)
-      }
-    
+       
+if (place.id === item.status) {
+  place.append(todoCard)
+}
       input.onkeydown = (event) => {
         if (event.key === 'Enter' || event.target !== input) {
           if (input.value.trim() === '') {
@@ -88,9 +90,9 @@ export async function createTask(arr) {
     todoCard.ondragend = () => {
         todoCard.className = 'todo-card'
     }
+    statusCounter++
    }
 
-  
   }
 
   export async function createTodoBlock(arr) {
@@ -99,40 +101,61 @@ export async function createTask(arr) {
     let todoBlock = document.createElement('div')
       let dotsBlock = document.createElement('div')
       let dotsIcon = document.createElement('img')
-      let input = document.createElement('input')
+      let button = document.createElement('button')
       let allTodoCard = document.createElement('div')
+      
       let addCard = document.createElement('div')
       let p = document.createElement('p')
   
-      input.classList.add('title-input')
+      button.classList.add('title-input')
       todoBlock.classList.add('todo-block')
       dotsBlock.classList.add('dots-block')
       dotsIcon.classList.add('dots-in-todo')
-      input.classList.add('title-input"')
+      button.classList.add('title-input')
       allTodoCard.classList.add('all-todo-card')
       addCard.classList.add('add-card')
   
-      input.type = 'text'
+      button.id = item.id
       p.innerHTML = '+'
       addCard.innerHTML = 'Добавить карточку'
       dotsIcon.src = './public/icon/dots.svg'
-      input.value = item.title
-  
-     
+      button.innerHTML = item.title
+      allTodoCard.id = item.title
+
 
       allTodoBlock.append(todoBlock)
-      todoBlock.append(dotsBlock, input, allTodoCard, addCard)
+      todoBlock.append(dotsBlock, button, allTodoCard, addCard)
       dotsBlock.append(dotsIcon)
       addCard.prepend(p)
   
-    
-  
-      input.focus();
-      input.selectionEnd = input.value.length;
-    
         allTodoCards.push(allTodoCard);
-  
-    
+        request("/todos", "get")
+        .then(res => {
+            createTask(res, allTodoCard)
+        })
+
+        addCard.onclick = () => {
+          openModal(createTaskBlock)
+        }
+
+        // let savedTitle = localStorage.getItem('newTitle');
+        // button.onclick = (e) => {
+        //   openModal(remakeTitle);
+        //   remakeTitleInp.value = button.innerHTML;
+        //   remakeTitleInp.onkeyup = () => {
+        //     savedTitle = remakeTitleInp.value;
+        //     localStorage.setItem('newTitle', savedTitle);
+        //   };
+        //   remakeTitleInp.id = button.id
+        //   if(button.id == remakeTitleInp.id) {
+        //     button.innerHTML = savedTitle
+        //   }
+        
+        //   console.log(remakeTitleInp.id);
+        // };
+
+        
+
     }
   }
   
@@ -166,3 +189,4 @@ export function reloadUser(arr) {
 		select.append(option);
 	}
 }
+

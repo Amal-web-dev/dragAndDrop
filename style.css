@@ -190,6 +190,7 @@ header img {
   gap: 15px;
   background-color: #9C446E;
   padding-left: 40px;
+  position: relative;
 }
 
 .under-header select {
@@ -238,6 +239,7 @@ header img {
   color: white;
   padding: 8px 5px;
   transition: .4s;
+  position: relative;
 }
 
 .btn-invite:hover {
@@ -666,7 +668,7 @@ main {
   background-color: #883C60;
   border-radius: 10px;
   position: absolute;
-  top: -30%;
+  top: -25%;
   right: 50%;
   translate: 50% 50%;
   padding: 30px;
@@ -845,7 +847,7 @@ main {
   background-color: #883C60;
   border-radius: 10px;
   position: absolute;
-  top: -30%;
+  top: -25%;
   right: 50%;
   translate: 50% 50%;
   padding: 30px;
@@ -897,4 +899,105 @@ main {
 .selected-ava  {
   border: 2px solid white;
   scale: 1.1;
+}
+
+.add-block {
+  width: 500px;
+  height: 200px;
+  background-color: #883C60;
+  position: absolute;
+  top: -5%;
+  right: 50%;
+  translate: 50% 50%;
+  z-index: 30;
+  border-radius: 10px;
+  padding: 30px;
+  display: none;
+}
+
+.add-block input {
+  background-color: #9B5B79;
+  border: none;
+  width: 400px;
+  height: 40px;
+  border-radius: 10px;
+  padding: 10px;
+  color: white;
+  margin-bottom: 15px;
+}
+
+.add-block p {
+  margin-bottom: 10px;
+  color: white;
+}
+
+.close-add-block {
+  filter: invert(100%);
+}
+
+.remake-title {
+  position: absolute;
+  top: -10%;
+  right: 50%;
+  translate: 50% 50%;
+  width: 300px;
+  height: 200px;
+  background-color: #9C446E;
+  border-radius: 10px;
+  scale: 0;
+  z-index: 100;
+}
+
+.filter-dosk {
+  width: auto;
+  height: 0px;
+  background-color: white;
+  position: absolute;
+  top: 55px;
+  left: 450px;
+  border-radius: 5px;
+  z-index: 50;
+  color: black;
+  padding: 5px;
+  display: none;
+}
+
+.filter-dosk p {
+  cursor: pointer;
+}
+
+.filter-dosk p:hover {
+  background-color: #DFE1E6;
+}
+
+.filter-active {
+  height: auto;
+  gap: 5px;
+}
+
+.filter-block {
+  display: block;
+}
+
+.canvas-for-search {
+  display: none;
+  opacity: 0;
+  transition: .4s ease;
+  width: 100%;
+  height: calc(100% - 47px);
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  background-color: rgba(0,0,0,.5);
+  backdrop-filter: blur(4px);
+}
+
+
+.finded {
+  z-index: 1000;
+  box-shadow: 0px 0px 10px 2px white;
+}
+
+.finded-block {
+  background-color: #883C60 !important;
 }

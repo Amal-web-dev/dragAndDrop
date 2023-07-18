@@ -6,6 +6,7 @@
   <link rel="icon" type="image/svg+xml" href="./public/icon/trello-icon.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
   <title>Trello</title>
 </head>
 
@@ -45,7 +46,7 @@
     </div>
     <div class="right-header">
       <div class="input-block-search">
-        <input type="search" placeholder="Search" class="inp-search">
+        <input type="search" placeholder="Search" class="inp-search" id="search">
         <img src="./public/icon/search.svg" width="20px" class="search-img">
       </div>
       <div class="info-icon-block">
@@ -86,6 +87,9 @@
             fill="currentColor"></path>
         </svg>
         По дoске</button>
+        <div class="filter-dosk">
+          <p class="all-block">All</p>
+        </div>
       <hr>
       <div class="users-icon-block">
       <!-- <div class="user-block-icon"><img src="./public/avatars/icon1.png"></div> -->
@@ -133,7 +137,6 @@
             fill="currentColor"></path>
         </svg>
         Поделиться
-
       </button>
     </div>
   </div>
@@ -194,6 +197,7 @@
   </div>
 
   <div class="back-modal"></div>
+  <div class="canvas-for-search"></div>
 
   <div class="create-task-block">
     <img src="./public/icon/cancel.svg" class="close-icon close">
@@ -223,7 +227,7 @@
       </label>
       <label>
         <p>Выберите дедлайн</p>
-        <input type="date" class="inp-date" name="date" required>
+        <input type="date" class="inp-date" name="date" id="input-date" required>
       </label>
       <br>
       <div class="btn-block">
@@ -243,7 +247,7 @@
       <input type="text" name="fullName" required>
     </label>
     <label>
-      <p>Выберите профессию</p>
+      <p>Выберите профессию(много крутых професси на выбор)</p>
       <select class="select-user" name="department">
         <option value="kachok">Kachok</option>
         <option value="Botan">Botan</option>
@@ -279,9 +283,26 @@
     </div>
   </div>
 
+  <div class="add-block">
+    <img src="./public/icon/cancel.svg" class="close-icon close-add-block">
+    <form name="add_block_form">
+      <label>
+        <p>Напишите статус</p>
+        <input type="text" name="title">
+      </label>
+      <div class="btn-block">
+      <button>Добавить</button>
+    </div>
+    </form>
+  </div>
+
   <div class="create-card-modal"></div>
 
+  <div class="remake-title">
+    <input type="text" class="remake-title-inp">
+  </div>
   <script type="module" src="/main.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
 </body>
 </html>

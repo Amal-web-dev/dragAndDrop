@@ -47,6 +47,12 @@
       "department": "Botan",
       "icon": "icon7.png",
       "id": 8
+    },
+    {
+      "fullName": "amal 2",
+      "department": "Xokage",
+      "icon": "icon9.png",
+      "id": 9
     }
   ],
   "blocks": [
@@ -64,6 +70,11 @@
       "id": 3,
       "title": "Выполнено",
       "tasks": []
+    },
+    {
+      "tasks": [],
+      "title": "pocti dodelal",
+      "id": 4
     }
   ],
   "todos": [
@@ -77,6 +88,17 @@
       "discription": "do  JS homeWork",
       "status": "Нужно сделать",
       "date": "2023-07-15"
+    },
+    {
+      "member": [
+        "Obama bam",
+        "Alex Adams"
+      ],
+      "id": 0.8565603543136291,
+      "task": "wad",
+      "discription": "asdaw",
+      "status": "Выполнено",
+      "date": "2023-07-14"
     }
   ]
 }

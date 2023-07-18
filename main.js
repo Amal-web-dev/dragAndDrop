@@ -1,7 +1,10 @@
 import { post } from "jquery";
 import { useHttp } from "./modules/http.request";
+const {request} = useHttp()
 import axios  from 'axios'
-import { allTodoCards, createTask, createTodoBlock, createUserIcon, reloadUser } from "./modules/ui.js";
+import { calendar } from "./modules/calendar";
+import { openModal, closeModal } from "./modules/func";
+import { allTodoCards, createTodoBlock, createUserIcon, reloadUser } from "./modules/ui.js";
 let arrowBlock = document.querySelector('.arrow-block')
 
 let arrowIcon = document.querySelector('.img-arrow')
@@ -35,17 +38,38 @@ let userAvatar  = document.querySelectorAll('.user-avatar')
 let closeUserIcon = document.querySelector('.close-user-add-icon')
 let addUserModal = document.querySelector('.add-user-modal')
 let addUser = document.querySelector('.add-user')
-let closeUserAdd=  document.querySelector('.close-user-add')
+let addBlock = document.querySelector('.add-block')
+let closeUserAdd = document.querySelector('.close-user-add')
+let closeAddBlock = document.querySelector('.close-add-block')
+let remakeTitleInp = document.querySelector('.remake-title-inp')
+let addTaskBlock = document.querySelector('.add-task-block')
+let btnInvite = document.querySelector('.btn-invite')
+let filterDosk = document.querySelector('.filter-dosk')
+let search_inp = document.querySelector('#search')
+let search_canvas = document.querySelector('.canvas-for-search')
+let allTodoBlock = document.querySelector('.all-todo-block')
+let allBlock = document.querySelector('.all-block')
+let main = document.querySelector('main')
 let formUser = document.forms.formUser
+let addBlockForm = document.forms.add_block_form
 
+console.log(titleInput);
 let selectedUsers = []
 let userArray = []
 let isStarred = false;
 let arrowToggle = false
 let temp_id
 let selectedAvatar = null;
+let todos_for_search = []
+let todos_for_dosk = []
 
-const {request} = useHttp()
+request("/todos", "get")
+    .then(res => todos_for_search = res)
+
+	request("/blocks", "get")
+    .then(res => todos_for_dosk = res)
+
+calendar("#input-date")
 
 // ui effects
 arrowBlock.onclick = () => {
@@ -84,23 +108,7 @@ starIcon.onclick = function () {
 
 // modal 
 
-function closeModal(block) {
-	block.style.scale = 0;
 
-	setTimeout(function () {
-		block.style.display = 'none';
-		backModal.style.display = 'none'
-	}, 300);
-}
-
-function openModal(block) {
-	block.style.display = 'block';
-	backModal.style.display = 'block';
-
-	setTimeout(function () {
-		block.style.scale = 1;
-	}, 0);
-}
 closeIcon.onclick = () => {
 	closeModal(avaBlock)
 };
@@ -131,6 +139,23 @@ addUser.onclick = () => {
 closeUserAdd.onclick = () => {
   closeModal(addUserModal)
 }
+
+addTodoBlock.onclick = () => {
+	openModal(addBlock)
+}
+
+closeAddBlock.onclick =  () => {
+	closeModal(addBlock)
+}
+
+btnInvite.onclick = () => {
+		filterDosk.classList.toggle('filter-block')
+
+	setTimeout(() => {
+		filterDosk.classList.toggle('filter-active')
+	}, 0);
+}
+
 // modal 
 
 
@@ -166,7 +191,7 @@ request('/blocks', 'get')
 
 let formTodo = document.forms.formTodo
 
-
+// forms
 
 formTodo.onsubmit = (e) => {
   e.preventDefault();
@@ -202,7 +227,7 @@ todo.member = members;
     todo[key] = value
   });
 
-  closeModal()
+  closeModal(createTaskBlock)
 
   formTodo.reset()
   usersBlock.innerHTML = ''
@@ -226,6 +251,7 @@ request('/members?fullName=' + fullNameParam, 'get')
 
 console.log(todo.member);
 };
+
 
 formUser.onsubmit = (e) => {
 	e.preventDefault();
@@ -254,17 +280,32 @@ formUser.onsubmit = (e) => {
   closeModal(addUserModal)
 }
 
+addBlockForm.onsubmit = (e) => {
+	e.preventDefault();
+
+	let blocks = {
+		tasks: []
+	}
+
+	let fm = new FormData(addBlockForm)
+
+	fm.forEach((value, key) => {
+		blocks[key] = value
+	  });
+
+	  console.log(blocks);
+
+	  closeModal(addBlock)
+	  request('/blocks', 'post', blocks)
+	  .then(res => console.log(res))
+}
+//forms
+
 select.onchange = () => {
 	createUser(selectedUsers);
 }
 
-
-request('/todos', 'get')
-.then(res => {
-	createTask(res)
-})
-
-export function createUser(arr) {
+function createUser(arr) {
 	let selectedOption = select.options[select.selectedIndex];
 	let selectedName = selectedOption.text;
 
@@ -295,6 +336,10 @@ export function createUser(arr) {
 	selectedUsers.push(selectedUser);
 }
 
+request('/blocks', 'get')
+.then(res => {
+	reloadContaineres(res)
+})
 request('/members', 'get') 
 .then(res => createUserIcon(res))
 
@@ -305,13 +350,7 @@ request("/members/", "get")
 		userArray = res
 	})
 
-	if (localStorage.getItem('titleValue')) {
-		let savedValue = localStorage.getItem('titleValue');
 	
-		titleInput.forEach(inp => {
-			inp.value = savedValue;
-	})
-	}
 
 	titleInput.forEach(inp => {
 		inp.onclick = () => {
@@ -331,7 +370,6 @@ request("/members/", "get")
 	};
 
 // DragAndDrop
-console.log(allTodoCards);
 	for(let allCard of allTodoCards) {
 		console.log(temp);
 		console.log(allCard);
@@ -358,3 +396,109 @@ console.log(allTodoCards);
 
 // DragAndDrop
 
+// search func
+
+search_inp.onfocus = () => {
+    search_canvas.style.display = "block"
+    setTimeout(() => {
+        search_canvas.style.opacity = "1"
+    }, 0);
+}
+search_inp.onblur = () => {
+    search_canvas.style.opacity = "0"
+    setTimeout(() => {
+        search_canvas.style.display = "none"
+    }, 400);
+    let elems = document.querySelectorAll('.finded')
+        elems.forEach(el => el.classList.remove('finded'))
+}
+console.log(todos_for_search);
+
+search_inp.oninput = (e) => {
+    let val = e.target.value.toLowerCase().trim()
+
+    let filtered = todos_for_search.filter(item => item.task.toLowerCase().trim() === val)
+
+    if(val) {
+        let elems = document.querySelectorAll('.finded')
+        elems.forEach(el => el.classList.remove('finded'))
+
+        for(let finded of filtered) {
+            let elem = document.getElementById(finded.id)
+            let {bottom, top, height} = elem.getBoundingClientRect()
+            elem.classList.add('finded')
+
+            main.scrollTo({
+                top: top - (height),
+                behavior: "smooth"
+            })
+        }
+    } else {
+        for(let finded of filtered) {
+            let elem = document.getElementById(finded.id)
+            elem.classList.remove('finded')
+        }
+    }
+
+}
+
+// search 
+
+// dosk func
+
+export function reloadContaineres(arr) {
+    for (const item of arr) {
+      let p = document.createElement('p')
+
+      p.innerHTML = item.title
+
+      filterDosk.append(p)
+
+      p.onclick = (e) => {
+		let val = e.target.innerHTML.toLowerCase().trim()
+       
+		filterDosk.classList.remove('filter-block')
+
+    setTimeout(() => {
+      filterDosk.classList.remove('filter-active')
+    }, 0);
+
+    let filtered = todos_for_dosk.filter(item => item.title.toLowerCase().trim() === val)
+	if(val) {
+        let elems = document.querySelectorAll('.finded-block')
+        elems.forEach(el => el.classList.remove('finded-block'))
+		
+
+        for(let finded of filtered) {
+            let elem = document.getElementById(finded.id)
+            let {bottom, top, height} = elem.getBoundingClientRect()
+            elem.parentElement.classList.add('finded-block')
+
+            main.scrollTo({
+                top: top - (height),
+                behavior: "smooth"
+            })
+			
+allBlock.onclick = () => {
+	elem.parentElement.classList.remove('finded-block')
+	filterDosk.classList.remove('filter-block')
+
+    setTimeout(() => {
+      filterDosk.classList.remove('filter-active')
+    }, 0);
+}
+        }
+    } else {
+        for(let finded of filtered) {
+            let elem = document.getElementById(finded.id)
+            elem.parentElement.classList.remove('finded-block')
+        }
+    }
+	
+      }
+	  
+    }
+
+}
+
+// dosk
