@@ -4,7 +4,7 @@ const {request} = useHttp()
 import axios  from 'axios'
 import { calendar } from "./modules/calendar";
 import { openModal, closeModal } from "./modules/func";
-import { allTodoCards, createTodoBlock, createUserIcon, reloadUser } from "./modules/ui.js";
+import {createTask, allTodoCards, createTodoBlock, createUserIcon, reloadUser } from "./modules/ui.js";
 let arrowBlock = document.querySelector('.arrow-block')
 
 let arrowIcon = document.querySelector('.img-arrow')
@@ -12,7 +12,6 @@ let leftBlind = document.querySelector('.left-blind')
 let elements = document.querySelectorAll('*');
 let inpSearch = document.querySelector('.inp-search')
 let searchImg = document.querySelector('.search-img')
-let titleInput = document.querySelectorAll('.title-input')
 let todoInput = document.querySelectorAll('.todo-input');
 let pencilButton = document.querySelectorAll('.pencil-block');
 let addCard = document.querySelectorAll('.add-card')
@@ -53,7 +52,6 @@ let main = document.querySelector('main')
 let formUser = document.forms.formUser
 let addBlockForm = document.forms.add_block_form
 
-console.log(titleInput);
 let selectedUsers = []
 let userArray = []
 let isStarred = false;
@@ -63,11 +61,7 @@ let selectedAvatar = null;
 let todos_for_search = []
 let todos_for_dosk = []
 
-request("/todos", "get")
-    .then(res => todos_for_search = res)
 
-	request("/blocks", "get")
-    .then(res => todos_for_dosk = res)
 
 calendar("#input-date")
 
@@ -84,7 +78,6 @@ arrowBlock.onclick = () => {
 	}
 
 }
-
 
 
 inpSearch.onclick = function () {
@@ -149,10 +142,10 @@ closeAddBlock.onclick =  () => {
 }
 
 btnInvite.onclick = () => {
-		filterDosk.classList.toggle('filter-block')
+	filterDosk.classList.add('filter-active')
 
-	setTimeout(() => {
-		filterDosk.classList.toggle('filter-active')
+	setTimeout(function () {
+		filterDosk.style.scale = 1;
 	}, 0);
 }
 
@@ -185,10 +178,6 @@ userIcon.forEach(icon => {
 })
 
 
-request('/blocks', 'get')
-.then(res => createTodoBlock(res))
-
-
 let formTodo = document.forms.formTodo
 
 // forms
@@ -214,12 +203,6 @@ userBlocks.forEach(userBlock => {
 });
  
 
-
-request('/members', 'get')
-.then(res => {
-  reloadUser(res)
-  userArray = res
-})
 
 todo.member = members;
 
@@ -274,7 +257,6 @@ formUser.onsubmit = (e) => {
 	 })
 	  formUser.reset()
 	  request("/members", "post", member)
-	  .then(res => console.log(res))
 
 	  
   closeModal(addUserModal)
@@ -283,9 +265,7 @@ formUser.onsubmit = (e) => {
 addBlockForm.onsubmit = (e) => {
 	e.preventDefault();
 
-	let blocks = {
-		tasks: []
-	}
+	let blocks = {}
 
 	let fm = new FormData(addBlockForm)
 
@@ -336,28 +316,79 @@ function createUser(arr) {
 	selectedUsers.push(selectedUser);
 }
 
+// request
+request("/todos", "get")
+    .then(res => todos_for_search = res)
+
+	request("/blocks", "get")
+    .then(res => todos_for_dosk = res)
+
 request('/blocks', 'get')
 .then(res => {
-	reloadContaineres(res)
+	reloadContainers(res)
 })
+
 request('/members', 'get') 
 .then(res => createUserIcon(res))
 
 
-request("/members/", "get")
+	request("/blocks", "get")
 	.then(res => {
-		reloadUser(res)
-		userArray = res
+		createTodoBlock(res, allTodoBlock)
+	})
+	.then(() => {
+        request("/todos", "get")
+        .then(res => {
+            createTask(res)
+        })
 	})
 
+	setTimeout(() => {
+		let pDosk = document.querySelectorAll('.p-dosk')
+		pDosk.forEach(p => {
+			p.onclick = ()  => {
+			let	title = p.id
+				request("/blocks?title=" + title, "get")
+				.then(res => createTodoBlock(res, allTodoBlock))
+				.then(() => {
+					request("/todos?status=" + title, "get")
+					.then(res => {
+						createTask(res)
+					})
+				})
+				filterDosk.classList.remove('filter-active')
+
+	setTimeout(function () {
+		filterDosk.style.scale = 0;
+	}, 0);
+			}
+		})
+	}, 1000);
+	
+	allBlock.onclick = () => {
+		request('/blocks', "get")
+		.then(res => createTodoBlock(res, allTodoBlock))
+		.then(() => {
+			request("/todos", "get")
+			.then(res => {
+				createTask(res)
+			})
+	})
+	filterDosk.classList.remove('filter-active')
+
+	setTimeout(function () {
+		filterDosk.style.scale = 0;
+	}, 0);
+}
+// request
 	
 
-	titleInput.forEach(inp => {
-		inp.onclick = () => {
-			inp.className = 'title-input-2'
-			inp.selectionStart = titleInput.value.length;
-		};
-		})
+	// titleInput.forEach(inp => {
+	// 	inp.onclick = () => {
+	// 		inp.className = 'title-input-2'
+	// 		inp.selectionStart = titleInput.value.length;
+	// 	};
+	// 	})
 	
 
 	document.onclick = (event) => {
@@ -369,32 +400,6 @@ request("/members/", "get")
 	
 	};
 
-// DragAndDrop
-	for(let allCard of allTodoCards) {
-		console.log(temp);
-		console.log(allCard);
-	
-		allCard.ondragover = (event) => {
-			event.preventDefault()
-		}
-		allCard.ondragenter = function(event) {
-			event.preventDefault()
-			this.className += ' hovered'
-		}
-		allCard.ondragleave = function() {
-			this.className = 'all-todo-card'
-		}
-		allCard.ondrop = function() {
-			this.className = 'all-todo-card'
-			temp.forEach((item, index) => {
-				if(item.id === temp_id) {
-					this.append(item)
-				}
-			})
-		}
-	}
-
-// DragAndDrop
 
 // search func
 
@@ -412,7 +417,6 @@ search_inp.onblur = () => {
     let elems = document.querySelectorAll('.finded')
         elems.forEach(el => el.classList.remove('finded'))
 }
-console.log(todos_for_search);
 
 search_inp.oninput = (e) => {
     let val = e.target.value.toLowerCase().trim()
@@ -446,59 +450,20 @@ search_inp.oninput = (e) => {
 
 // dosk func
 
-export function reloadContaineres(arr) {
+
+
+function reloadContainers(arr) {
     for (const item of arr) {
       let p = document.createElement('p')
 
       p.innerHTML = item.title
+	  p.classList.add('p-dosk')
+      p.id = item.title
 
       filterDosk.append(p)
-
-      p.onclick = (e) => {
-		let val = e.target.innerHTML.toLowerCase().trim()
-       
-		filterDosk.classList.remove('filter-block')
-
-    setTimeout(() => {
-      filterDosk.classList.remove('filter-active')
-    }, 0);
-
-    let filtered = todos_for_dosk.filter(item => item.title.toLowerCase().trim() === val)
-	if(val) {
-        let elems = document.querySelectorAll('.finded-block')
-        elems.forEach(el => el.classList.remove('finded-block'))
-		
-
-        for(let finded of filtered) {
-            let elem = document.getElementById(finded.id)
-            let {bottom, top, height} = elem.getBoundingClientRect()
-            elem.parentElement.classList.add('finded-block')
-
-            main.scrollTo({
-                top: top - (height),
-                behavior: "smooth"
-            })
-			
-allBlock.onclick = () => {
-	elem.parentElement.classList.remove('finded-block')
-	filterDosk.classList.remove('filter-block')
-
-    setTimeout(() => {
-      filterDosk.classList.remove('filter-active')
-    }, 0);
-}
-        }
-    } else {
-        for(let finded of filtered) {
-            let elem = document.getElementById(finded.id)
-            elem.parentElement.classList.remove('finded-block')
-        }
-    }
-	
       }
 	  
     }
 
-}
 
 // dosk

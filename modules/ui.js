@@ -17,9 +17,10 @@ let remakeTitle = document.querySelector('.remake-title')
 let remakeTitleInp = document.querySelector('.remake-title-inp')
 let createTaskBlock = document.querySelector('.create-task-block')
 let filterDosk = document.querySelector('.filter-dosk')
+let trashBlock = document.querySelector('.trash-block')
+let audio = document.querySelector('.audio')
 
-async function createTask(arr, place) {
-  place.innerHTML = ''
+export async function createTask(arr) {
 
     for (const item of arr) {
       let todoCard = document.createElement('div');
@@ -63,14 +64,15 @@ async function createTask(arr, place) {
       
     todoCard.setAttribute('id', item.id)
     todoCard.setAttribute('draggable', true)
+		todoCard.setAttribute('data', item.status)
   
       todoCard.append(input, descriptionP, pencil, timeBlock, userDiv);
       timeBlock.append(timeIcon, timeSpan)
-    
+
+		let blockToAppend = document.querySelector(`#${item.status.replaceAll(' ', '').toLowerCase()} .all-todo-card`)
+		blockToAppend.append(todoCard)
+
        
-if (place.id === item.status) {
-  place.append(todoCard)
-}
       input.onkeydown = (event) => {
         if (event.key === 'Enter' || event.target !== input) {
           if (input.value.trim() === '') {
@@ -82,26 +84,32 @@ if (place.id === item.status) {
   
     }
     }
+
+    
+		temp.push(todoCard)
     todoCard.ondragstart = () => {
         temp_id = item.id
         todoCard.classList.add('hold')
         setTimeout(() => (todoCard.className = 'invisible'), 0)
+        trashBlock.style.display = 'block'
     }
     todoCard.ondragend = () => {
         todoCard.className = 'todo-card'
+        trashBlock.style.display = 'none'
     }
     statusCounter++
    }
 
   }
 
-  export async function createTodoBlock(arr) {
+  export async function createTodoBlock(arr, place) {
+  place.innerHTML = ''
 
         for (const item of arr) {
     let todoBlock = document.createElement('div')
       let dotsBlock = document.createElement('div')
       let dotsIcon = document.createElement('img')
-      let button = document.createElement('button')
+      let button = document.createElement('input')
       let allTodoCard = document.createElement('div')
       
       let addCard = document.createElement('div')
@@ -119,43 +127,64 @@ if (place.id === item.status) {
       p.innerHTML = '+'
       addCard.innerHTML = 'Добавить карточку'
       dotsIcon.src = './public/icon/dots.svg'
-      button.innerHTML = item.title
+      button.value = item.title
       allTodoCard.id = item.title
 
 
-      allTodoBlock.append(todoBlock)
+      place.append(todoBlock)
       todoBlock.append(dotsBlock, button, allTodoCard, addCard)
       dotsBlock.append(dotsIcon)
       addCard.prepend(p)
+
+      todoBlock.id = item.title.toLowerCase().replaceAll(' ', '')
   
-        allTodoCards.push(allTodoCard);
-        request("/todos", "get")
-        .then(res => {
-            createTask(res, allTodoCard)
+      allTodoCard.ondragover = (e) => {
+        e.preventDefault()
+      }
+  
+      allTodoCard.ondragenter = function (e) {
+        e.preventDefault()
+        this.classList.add('hovered')
+      }
+  
+      allTodoCard.ondragleave = function () {
+        this.className = 'all-todo-card';
+      }
+
+      trashBlock.ondragenter = (e) => {
+       }
+
+       trashBlock.ondragover = (e) => {
+        e.preventDefault()
+      }
+
+       trashBlock.ondrop = function () {
+        temp.forEach((item) => {
+          if(item.id == temp_id) {
+            request('/todos/' + item.id, 'delete')
+          }
         })
+        audio.volume = "1"
+			 audio.play()
+       }
+      allTodoCard.ondrop = function () {
+        this.className = 'all-todo-card'
+        temp.forEach((item) => {
+          if (item.id == temp_id) {
+            request("/todos/" + item.id, "patch", {
+              status: this.id
+            })
+            this.prepend(item)
+          }
+        })
+      }
+
+
+        allTodoCards.push(allTodoCard);
 
         addCard.onclick = () => {
           openModal(createTaskBlock)
         }
-
-        // let savedTitle = localStorage.getItem('newTitle');
-        // button.onclick = (e) => {
-        //   openModal(remakeTitle);
-        //   remakeTitleInp.value = button.innerHTML;
-        //   remakeTitleInp.onkeyup = () => {
-        //     savedTitle = remakeTitleInp.value;
-        //     localStorage.setItem('newTitle', savedTitle);
-        //   };
-        //   remakeTitleInp.id = button.id
-        //   if(button.id == remakeTitleInp.id) {
-        //     button.innerHTML = savedTitle
-        //   }
-        
-        //   console.log(remakeTitleInp.id);
-        // };
-
-        
-
     }
   }
   

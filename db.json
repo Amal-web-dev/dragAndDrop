@@ -37,42 +37,26 @@
       "department": "Akter"
     },
     {
-      "fullName": "awd",
-      "department": "pojarnik",
-      "icon": "icon3.png",
-      "id": 7
-    },
-    {
-      "fullName": "awd",
+      "fullName": "amal 3",
       "department": "Botan",
-      "icon": "icon7.png",
-      "id": 8
-    },
-    {
-      "fullName": "amal 2",
-      "department": "Xokage",
-      "icon": "icon9.png",
-      "id": 9
+      "icon": "icon4.png",
+      "id": 7
     }
   ],
   "blocks": [
     {
       "id": 1,
-      "title": "Нужно сделать",
-      "tasks": []
+      "title": "Нужно сделать"
     },
     {
       "id": 2,
-      "title": "В процессе",
-      "tasks": []
+      "title": "В процессе"
     },
     {
       "id": 3,
-      "title": "Выполнено",
-      "tasks": []
+      "title": "Выполнено"
     },
     {
-      "tasks": [],
       "title": "pocti dodelal",
       "id": 4
     }
@@ -85,8 +69,8 @@
       ],
       "id": 0.26219144164299624,
       "task": "homeTask",
-      "discription": "do  JS homeWork",
-      "status": "Нужно сделать",
+      "discription": "do JS homeWork",
+      "status": "pocti dodelal",
       "date": "2023-07-15"
     },
     {
