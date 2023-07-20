@@ -1,10 +1,27 @@
-import { post } from "jquery";
-import { useHttp } from "./modules/http.request";
-const {request} = useHttp()
-import axios  from 'axios'
-import { calendar } from "./modules/calendar";
-import { openModal, closeModal } from "./modules/func";
-import {createTask, allTodoCards, createTodoBlock, createUserIcon, reloadUser } from "./modules/ui.js";
+import {
+	post
+} from "jquery";
+import {
+	useHttp
+} from "./modules/http.request";
+const {
+	request
+} = useHttp()
+import axios from 'axios'
+import {
+	calendar
+} from "./modules/calendar";
+import {
+	openModal,
+	closeModal
+} from "./modules/func";
+import {
+	createTask,
+	allTodoCards,
+	createTodoBlock,
+	createUserIcon,
+	reloadUser
+} from "./modules/ui.js";
 let arrowBlock = document.querySelector('.arrow-block')
 
 let arrowIcon = document.querySelector('.img-arrow')
@@ -33,7 +50,7 @@ let imgBlock = document.querySelector('.img-block');
 let usersBlock = document.querySelector('.users-block')
 let todoCard = document.querySelectorAll('.todo-card')
 let allTodoCard = document.querySelectorAll('.all-todo-card');
-let userAvatar  = document.querySelectorAll('.user-avatar')
+let userAvatar = document.querySelectorAll('.user-avatar')
 let closeUserIcon = document.querySelector('.close-user-add-icon')
 let addUserModal = document.querySelector('.add-user-modal')
 let addUser = document.querySelector('.add-user')
@@ -119,7 +136,7 @@ closeBtn.onclick = () => {
 }
 closeTodo.onclick = () => {
 	closeModal(createTaskBlock)
-} 
+}
 
 closeUserIcon.onclick = () => {
 	closeModal(addUserModal)
@@ -130,14 +147,14 @@ addUser.onclick = () => {
 }
 
 closeUserAdd.onclick = () => {
-  closeModal(addUserModal)
+	closeModal(addUserModal)
 }
 
 addTodoBlock.onclick = () => {
 	openModal(addBlock)
 }
 
-closeAddBlock.onclick =  () => {
+closeAddBlock.onclick = () => {
 	closeModal(addBlock)
 }
 
@@ -164,13 +181,13 @@ userFace.forEach(img => {
 
 userAvatar.forEach(ava => {
 	ava.onclick = () => {
-	  if (selectedAvatar) {
-		selectedAvatar.classList.remove('selected-ava')
-	  }
-	  ava.classList.add('selected-ava')
-	  selectedAvatar = ava; 
+		if (selectedAvatar) {
+			selectedAvatar.classList.remove('selected-ava')
+		}
+		ava.classList.add('selected-ava')
+		selectedAvatar = ava;
 	}
-  });
+});
 
 let src = localStorage.getItem('selectedImage')
 userIcon.forEach(icon => {
@@ -183,56 +200,56 @@ let formTodo = document.forms.formTodo
 // forms
 
 formTodo.onsubmit = (e) => {
-  e.preventDefault();
+	e.preventDefault();
 
-  let fm = new FormData(formTodo);
+	let fm = new FormData(formTodo);
 
-  let pValue
-  let todo = {
-    member: [],
-    id: Math.random()
-  }
-  let userBlocks = usersBlock.querySelectorAll('.user-block');
-let members = [];
-userBlocks.forEach(userBlock => {
-  let pElements = userBlock.querySelectorAll('p');
-  pElements.forEach(pElement => {
-    pValue = pElement.textContent;
-    members.push(pValue);
-  });
-});
- 
-
-
-todo.member = members;
-
-  fm.forEach((value, key) => {
-    todo[key] = value
-  });
-
-  closeModal(createTaskBlock)
-
-  formTodo.reset()
-  usersBlock.innerHTML = ''
-  for (let i = select.options.length - 1; i > 0; i--) {
-    select.remove(i);
-  }
-
-  request('/todos', 'post', todo)
+	let pValue
+	let todo = {
+		member: [],
+		id: Math.random()
+	}
+	let userBlocks = usersBlock.querySelectorAll('.user-block');
+	let members = [];
+	userBlocks.forEach(userBlock => {
+		let pElements = userBlock.querySelectorAll('p');
+		pElements.forEach(pElement => {
+			pValue = pElement.textContent;
+			members.push(pValue);
+		});
+	});
 
 
-  let names = todo.member; 
-let fullNameParam = names.join(',');
 
-request('/members?fullName=' + fullNameParam, 'get')
-  .then(res => {
-    console.log(res);
-  })
-  .catch(error => {
-    console.error(error);
-  });
+	todo.member = members;
 
-console.log(todo.member);
+	fm.forEach((value, key) => {
+		todo[key] = value
+	});
+
+	closeModal(createTaskBlock)
+
+	formTodo.reset()
+	usersBlock.innerHTML = ''
+	for (let i = select.options.length - 1; i > 0; i--) {
+		select.remove(i);
+	}
+
+	request('/todos', 'post', todo)
+
+
+	let names = todo.member;
+	let fullNameParam = names.join(',');
+
+	request('/members?fullName=' + fullNameParam, 'get')
+		.then(res => {
+			console.log(res);
+		})
+		.catch(error => {
+			console.error(error);
+		});
+
+	console.log(todo.member);
 };
 
 
@@ -245,21 +262,21 @@ formUser.onsubmit = (e) => {
 
 	fm.forEach((value, key) => {
 		member[key] = value
-	  });
+	});
 
-     userAvatar.forEach(ava => {
+	userAvatar.forEach(ava => {
 		if (ava.classList.contains('selected-ava')) {
 			member.icon = ava.getAttribute('data-avatar')
 		}
-	 })
-	 userAvatar.forEach(ava => {
+	})
+	userAvatar.forEach(ava => {
 		ava.classList.remove('selected-ava')
-	 })
-	  formUser.reset()
-	  request("/members", "post", member)
+	})
+	formUser.reset()
+	request("/members", "post", member)
 
-	  
-  closeModal(addUserModal)
+
+	closeModal(addUserModal)
 }
 
 addBlockForm.onsubmit = (e) => {
@@ -271,13 +288,13 @@ addBlockForm.onsubmit = (e) => {
 
 	fm.forEach((value, key) => {
 		blocks[key] = value
-	  });
+	});
 
-	  console.log(blocks);
+	console.log(blocks);
 
-	  closeModal(addBlock)
-	  request('/blocks', 'post', blocks)
-	  .then(res => console.log(res))
+	closeModal(addBlock)
+	request('/blocks', 'post', blocks)
+		.then(res => console.log(res))
 }
 //forms
 
@@ -318,62 +335,59 @@ function createUser(arr) {
 
 // request
 request("/todos", "get")
-    .then(res => todos_for_search = res)
+	.then(res => todos_for_search = res)
 
-	request("/blocks", "get")
-    .then(res => todos_for_dosk = res)
-
-request('/blocks', 'get')
-.then(res => {
-	reloadContainers(res)
-})
-
-request('/members', 'get') 
-.then(res => createUserIcon(res))
+request('/members', 'get')
+	.then(res => {
+		createUserIcon(res)
+		reloadUser(res)
+	})
 
 
-	request("/blocks", "get")
+request("/blocks", "get")
 	.then(res => {
 		createTodoBlock(res, allTodoBlock)
+		reloadContainers(res)
+		todos_for_dosk = res
 	})
 	.then(() => {
-        request("/todos", "get")
-        .then(res => {
-            createTask(res)
-        })
-	})
-
-	setTimeout(() => {
-		let pDosk = document.querySelectorAll('.p-dosk')
-		pDosk.forEach(p => {
-			p.onclick = ()  => {
-			let	title = p.id
-				request("/blocks?title=" + title, "get")
-				.then(res => createTodoBlock(res, allTodoBlock))
-				.then(() => {
-					request("/todos?status=" + title, "get")
-					.then(res => {
-						createTask(res)
-					})
-				})
-				filterDosk.classList.remove('filter-active')
-
-	setTimeout(function () {
-		filterDosk.style.scale = 0;
-	}, 0);
-			}
-		})
-	}, 1000);
-	
-	allBlock.onclick = () => {
-		request('/blocks', "get")
-		.then(res => createTodoBlock(res, allTodoBlock))
-		.then(() => {
-			request("/todos", "get")
+		request("/todos", "get")
 			.then(res => {
 				createTask(res)
 			})
 	})
+
+setTimeout(() => {
+	let pDosk = document.querySelectorAll('.p-dosk')
+	pDosk.forEach(p => {
+		p.onclick = () => {
+			let title = p.id
+			request("/blocks?title=" + title, "get")
+				.then(res => createTodoBlock(res, allTodoBlock))
+				.then(() => {
+					request("/todos?status=" + title, "get")
+						.then(res => {
+							createTask(res)
+						})
+				})
+			filterDosk.classList.remove('filter-active')
+
+			setTimeout(function () {
+				filterDosk.style.scale = 0;
+			}, 0);
+		}
+	})
+}, 1000);
+
+allBlock.onclick = () => {
+	request('/blocks', "get")
+		.then(res => createTodoBlock(res, allTodoBlock))
+		.then(() => {
+			request("/todos", "get")
+				.then(res => {
+					createTask(res)
+				})
+		})
 	filterDosk.classList.remove('filter-active')
 
 	setTimeout(function () {
@@ -381,68 +395,72 @@ request('/members', 'get')
 	}, 0);
 }
 // request
-	
 
-	// titleInput.forEach(inp => {
-	// 	inp.onclick = () => {
-	// 		inp.className = 'title-input-2'
-	// 		inp.selectionStart = titleInput.value.length;
-	// 	};
-	// 	})
-	
 
-	document.onclick = (event) => {
-		if (!inpSearch.contains(event.target)) {
-			inpSearch.className = 'inp-search'
-			searchImg.classList.remove('black-img')
-			inpSearch.placeholder = 'Serach'
-		}
-	
-	};
+// titleInput.forEach(inp => {
+// 	inp.onclick = () => {
+// 		inp.className = 'title-input-2'
+// 		inp.selectionStart = titleInput.value.length;
+// 	};
+// 	})
+
+
+document.onclick = (event) => {
+	if (!inpSearch.contains(event.target)) {
+		inpSearch.className = 'inp-search'
+		searchImg.classList.remove('black-img')
+		inpSearch.placeholder = 'Serach'
+	}
+
+};
 
 
 // search func
 
 search_inp.onfocus = () => {
-    search_canvas.style.display = "block"
-    setTimeout(() => {
-        search_canvas.style.opacity = "1"
-    }, 0);
+	search_canvas.style.display = "block"
+	setTimeout(() => {
+		search_canvas.style.opacity = "1"
+	}, 0);
 }
 search_inp.onblur = () => {
-    search_canvas.style.opacity = "0"
-    setTimeout(() => {
-        search_canvas.style.display = "none"
-    }, 400);
-    let elems = document.querySelectorAll('.finded')
-        elems.forEach(el => el.classList.remove('finded'))
+	search_canvas.style.opacity = "0"
+	setTimeout(() => {
+		search_canvas.style.display = "none"
+	}, 400);
+	let elems = document.querySelectorAll('.finded')
+	elems.forEach(el => el.classList.remove('finded'))
 }
 
 search_inp.oninput = (e) => {
-    let val = e.target.value.toLowerCase().trim()
+	let val = e.target.value.toLowerCase().trim()
 
-    let filtered = todos_for_search.filter(item => item.task.toLowerCase().trim() === val)
+	let filtered = todos_for_search.filter(item => item.task.toLowerCase().trim() === val)
 
-    if(val) {
-        let elems = document.querySelectorAll('.finded')
-        elems.forEach(el => el.classList.remove('finded'))
+	if (val) {
+		let elems = document.querySelectorAll('.finded')
+		elems.forEach(el => el.classList.remove('finded'))
 
-        for(let finded of filtered) {
-            let elem = document.getElementById(finded.id)
-            let {bottom, top, height} = elem.getBoundingClientRect()
-            elem.classList.add('finded')
+		for (let finded of filtered) {
+			let elem = document.getElementById(finded.id)
+			let {
+				bottom,
+				top,
+				height
+			} = elem.getBoundingClientRect()
+			elem.classList.add('finded')
 
-            main.scrollTo({
-                top: top - (height),
-                behavior: "smooth"
-            })
-        }
-    } else {
-        for(let finded of filtered) {
-            let elem = document.getElementById(finded.id)
-            elem.classList.remove('finded')
-        }
-    }
+			main.scrollTo({
+				top: top - (height),
+				behavior: "smooth"
+			})
+		}
+	} else {
+		for (let finded of filtered) {
+			let elem = document.getElementById(finded.id)
+			elem.classList.remove('finded')
+		}
+	}
 
 }
 
@@ -453,17 +471,14 @@ search_inp.oninput = (e) => {
 
 
 function reloadContainers(arr) {
-    for (const item of arr) {
-      let p = document.createElement('p')
+	for (const item of arr) {
+		let p = document.createElement('p')
 
-      p.innerHTML = item.title
-	  p.classList.add('p-dosk')
-      p.id = item.title
+		p.innerHTML = item.title
+		p.classList.add('p-dosk')
+		p.id = item.title
 
-      filterDosk.append(p)
-      }
-	  
-    }
+		filterDosk.append(p)
+	}
 
-
-// dosk
+}
