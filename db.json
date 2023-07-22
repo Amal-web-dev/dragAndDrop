@@ -37,9 +37,9 @@
       "department": "Akter"
     },
     {
-      "fullName": "amal 3",
+      "fullName": "daler",
       "department": "Botan",
-      "icon": "icon4.png",
+      "avatar": "icon4.png",
       "id": 7
     }
   ],
@@ -74,32 +74,20 @@
       "id": 0.26219144164299624,
       "task": "homeTask",
       "discription": "do JS homeWork",
-      "status": "Выполнено",
+      "status": "В процессе",
       "date": "2023-07-15"
     },
     {
-      "member": [],
-      "id": 0.12244788428020972,
-      "task": "Buy Model S",
-      "discription": "google 2",
+      "member": [
+        "daler",
+        "Brat Jhona",
+        "Shavkat Mirz"
+      ],
+      "id": 0.7596800740990581,
+      "task": "доделать этот сайт",
+      "discription": "надоел уже",
       "status": "Выполнено",
-      "date": "28.07.2023"
-    },
-    {
-      "member": [],
-      "id": 0.12244788428020972,
-      "task": "Buy Model S",
-      "discription": "google 3",
-      "status": "Выполнено",
-      "date": "28.07.2023"
-    },
-    {
-      "member": [],
-      "id": 0.973,
-      "task": "facebook",
-      "discription": "facebook",
-      "status": "Выполнено",
-      "date": "28.07.2023"
+      "date": "22.07.2023"
     }
   ]
 }

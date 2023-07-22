@@ -20,7 +20,8 @@ import {
 	allTodoCards,
 	createTodoBlock,
 	createUserIcon,
-	reloadUser
+	reloadUser,
+	reloadStatus
 } from "./modules/ui.js";
 let arrowBlock = document.querySelector('.arrow-block')
 
@@ -249,9 +250,7 @@ formTodo.onsubmit = (e) => {
 			console.error(error);
 		});
 
-	console.log(todo.member);
 };
-
 
 formUser.onsubmit = (e) => {
 	e.preventDefault();
@@ -266,7 +265,7 @@ formUser.onsubmit = (e) => {
 
 	userAvatar.forEach(ava => {
 		if (ava.classList.contains('selected-ava')) {
-			member.icon = ava.getAttribute('data-avatar')
+			member.avatar = ava.getAttribute('data-avatar')
 		}
 	})
 	userAvatar.forEach(ava => {
@@ -299,10 +298,10 @@ addBlockForm.onsubmit = (e) => {
 //forms
 
 select.onchange = () => {
-	createUser(selectedUsers);
+	createUser();
 }
 
-function createUser(arr) {
+function createUser() {
 	let selectedOption = select.options[select.selectedIndex];
 	let selectedName = selectedOption.text;
 
@@ -311,6 +310,7 @@ function createUser(arr) {
 	let icon = document.createElement('img');
 	let closeIcon = document.createElement('img');
 	let name = document.createElement('p');
+
 	icon.src = `/avatars/${selectedUser.avatar}`;
 	name.innerHTML = selectedName;
 	icon.style.width = '40px';
@@ -341,12 +341,13 @@ request('/members', 'get')
 	.then(res => {
 		createUserIcon(res)
 		reloadUser(res)
+		userArray = res
 	})
-
 
 request("/blocks", "get")
 	.then(res => {
 		createTodoBlock(res, allTodoBlock)
+		reloadStatus(res)
 		reloadContainers(res)
 		todos_for_dosk = res
 	})
@@ -357,52 +358,9 @@ request("/blocks", "get")
 			})
 	})
 
-setTimeout(() => {
-	let pDosk = document.querySelectorAll('.p-dosk')
-	pDosk.forEach(p => {
-		p.onclick = () => {
-			let title = p.id
-			request("/blocks?title=" + title, "get")
-				.then(res => createTodoBlock(res, allTodoBlock))
-				.then(() => {
-					request("/todos?status=" + title, "get")
-						.then(res => {
-							createTask(res)
-						})
-				})
-			filterDosk.classList.remove('filter-active')
 
-			setTimeout(function () {
-				filterDosk.style.scale = 0;
-			}, 0);
-		}
-	})
-}, 1000);
-
-allBlock.onclick = () => {
-	request('/blocks', "get")
-		.then(res => createTodoBlock(res, allTodoBlock))
-		.then(() => {
-			request("/todos", "get")
-				.then(res => {
-					createTask(res)
-				})
-		})
-	filterDosk.classList.remove('filter-active')
-
-	setTimeout(function () {
-		filterDosk.style.scale = 0;
-	}, 0);
-}
 // request
 
-
-// titleInput.forEach(inp => {
-// 	inp.onclick = () => {
-// 		inp.className = 'title-input-2'
-// 		inp.selectionStart = titleInput.value.length;
-// 	};
-// 	})
 
 
 document.onclick = (event) => {
@@ -468,6 +426,43 @@ search_inp.oninput = (e) => {
 
 // dosk func
 
+setTimeout(() => {
+	let pDosk = document.querySelectorAll('.p-dosk')
+	pDosk.forEach(p => {
+		p.onclick = () => {
+			let title = p.id
+			request("/blocks?title=" + title, "get")
+				.then(res => createTodoBlock(res, allTodoBlock))
+				.then(() => {
+					request("/todos?status=" + title, "get")
+						.then(res => {
+							createTask(res)
+						})
+				})
+			filterDosk.classList.remove('filter-active')
+
+			setTimeout(function () {
+				filterDosk.style.scale = 0;
+			}, 0);
+		}
+	})
+}, 1000);
+
+allBlock.onclick = () => {
+	request('/blocks', "get")
+		.then(res => createTodoBlock(res, allTodoBlock))
+		.then(() => {
+			request("/todos", "get")
+				.then(res => {
+					createTask(res)
+				})
+		})
+	filterDosk.classList.remove('filter-active')
+
+	setTimeout(function () {
+		filterDosk.style.scale = 0;
+	}, 0);
+}
 
 
 function reloadContainers(arr) {
@@ -482,3 +477,5 @@ function reloadContainers(arr) {
 	}
 
 }
+
+// p-dosk

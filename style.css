@@ -520,6 +520,10 @@ main {
   height: 30px;
 }
 
+.dots-block img {
+  width: 20px;
+}
+
 .dots-block:hover {
   background-color: #DFE1E6;
 }
@@ -606,7 +610,7 @@ main {
   flex-direction: column;
   gap: 10px;
   margin-top: 10px;
-  min-height: 40px;
+  min-height: 100px;
 }
 
 .all-main-block {
