@@ -27,6 +27,7 @@ let filterDosk = document.querySelector('.filter-dosk')
 let trashBlock = document.querySelector('.trash-block')
 let audio = document.querySelector('.audio')
 let selectStatus = document.querySelector('.select-status')
+let svgTrash = document.querySelector('.trash-img')
 let todosBlock = []
 
 
@@ -44,6 +45,7 @@ export async function createTask(arr) {
 		for (const avatar of item.member) {
 			let userIcon = document.createElement('img');
 			userIcon.style.width = '25px'
+			userIcon.setAttribute('draggable', false)
 			userDiv.append(userIcon)
 			await request("/members", "get")
 				.then(res => {
@@ -106,6 +108,14 @@ export async function createTask(arr) {
 			trashBlock.style.display = 'none'
 		}
 
+		pencil.onclick = () => {
+			let pencilId = pencil.parentElement.id
+			openModal(createTaskBlock)
+			console.log(createTaskBlock.childElements);
+			request('/todos?id=' + pencilId, 'get')
+			.then(res => res)
+		}
+
 		statusCounter++
 	}
 
@@ -154,7 +164,7 @@ export async function createTodoBlock(arr, place) {
 		button.id = item.id
 		p.innerHTML = '+'
 		addCard.innerHTML = 'Добавить карточку'
-		dotsIcon.src = './public/icon/menu.png'
+		dotsIcon.src = './public/icon/dots.svg'
 		button.value = item.title
 		allTodoCard.id = item.title
 
@@ -179,7 +189,13 @@ export async function createTodoBlock(arr, place) {
 			this.className = 'all-todo-card';
 		}
 
-		trashBlock.ondragenter = (e) => {}
+		svgTrash.ondragenter = () => {
+		    svgTrash.classList.remove('close-trash')
+		}
+
+		svgTrash.ondragleave = () => {
+		    svgTrash.classList.add('close-trash')
+		}
 
 		trashBlock.ondragover = (e) => {
 			e.preventDefault()
@@ -226,88 +242,6 @@ export async function createTodoBlock(arr, place) {
       todoBlockSelected.style.cursor = 'pointer';
     };
     
-
-    allTodoBlock.ondragstart = () => {
-			temp_id = item.id
-			todoBlock.classList.add('hold')
-			setTimeout(() => (todoBlock.className = 'invisible'), 0)
-			trashBlock.style.display = 'block'
-		}
-		allTodoBlock.ondragend = () => {
-			todoBlock.className = 'todo-block'
-			trashBlock.style.display = 'none'
-		}
-
-    allTodoBlock.ondragover = (e) => {
-			e.preventDefault()
-		}
-
-		allTodoBlock.ondragenter = function (e) {
-			e.preventDefault()
-			this.classList.add('hovered')
-		}
-
-		allTodoBlock.ondragleave = function () {
-			this.className = 'all-todo-block';
-		}
-
-    allTodoBlock.ondrop = function () {
-			todosBlock = document.querySelectorAll('.todo-block')
-			todosBlock.forEach(el => el.style.margin = "0")
-
-			this.className = 'all-todo-block'
-			// temp.forEach((item) => {
-			// 	if (item.id == temp_id) {
-			// 		// request("/blocks/" + item.id, "patch", {
-			// 		// 	status: this.id
-			// 		// })
-      // this.prepend(item)
-			// 	}
-			// })
-		}
-
-    var oldX = 0, newX = 0;
-
-    todosBlock = document.querySelectorAll('.todo-block')
-    todosBlock.forEach(todo => {
-      todo.ondragenter = function (e) {
-        let center = todo.getBoundingClientRect().width / 2
-        let {
-          layerY
-        } = e
-        todosBlock.forEach(todo => todo.style.margin = "0px")
-  
-        if (layerY > center) {
-          todo.style.marginRight = "100px"
-        } else {
-          todo.style.marginLeft = "100px"
-        }
-  
-      }
-    });
-    // function elementDrag(e) {
-    //   e = e || window.event;
-    //   e.preventDefault();
-    //   console.log(e);
-    //   newX = oldX - e.clientX; 
-    //   oldX = e.clientX; 
-    //   todoBlock.style.left = (todoBlock.offsetLeft - newX) + "px"; 
-    // }
-    
-    // function closeDragElement() {
-    //   document.onmouseup = null;
-    //   document.onmousemove = null;
-    // }
-    
-    // function dragMouseDown(e) {
-    //   e = e || window.event;
-    //   e.preventDefault();
-    //   oldX = e.clientX; 
-    //   document.onmouseup = closeDragElement;
-    //   document.onmousemove = elementDrag;
-    // }
-    
-    // todoBlock.onmousedown = dragMouseDown;
 	}
 }
 

@@ -74,7 +74,7 @@
       "id": 0.26219144164299624,
       "task": "homeTask",
       "discription": "do JS homeWork",
-      "status": "В процессе",
+      "status": "Выполнено",
       "date": "2023-07-15"
     },
     {
@@ -86,8 +86,19 @@
       "id": 0.7596800740990581,
       "task": "доделать этот сайт",
       "discription": "надоел уже",
-      "status": "Выполнено",
+      "status": "В процессе",
       "date": "22.07.2023"
+    },
+    {
+      "member": [
+        "Jordan Belfort",
+        "Jhon Skala"
+      ],
+      "id": 0.2308839035943231,
+      "task": "easf",
+      "discription": "easf",
+      "status": "В процессе",
+      "date": "28.07.2023"
     }
   ]
 }
